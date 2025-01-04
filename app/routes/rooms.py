@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 rooms_bp = Blueprint("rooms", __name__)
 
 
-@ rooms_bp.route("/rooms", methods=["POST"])
+@rooms_bp.route("/rooms", methods=["POST"])
 def create_new_room():
     db: Session = next(get_db())
     room_data = MeetingRoomCreate(**request.json)
@@ -26,7 +26,7 @@ def create_new_room():
     return jsonify(MeetingRoomInDB.from_attributes(room).dict()), 201
 
 
-@ rooms_bp.route("/rooms/<int:room_id>", methods=["GET"])
+@rooms_bp.route("/rooms/<int:room_id>", methods=["GET"])
 def get_existing_room(room_id: int):
     db: Session = next(get_db())
     room = get_room_by_id(db, room_id)
@@ -35,7 +35,7 @@ def get_existing_room(room_id: int):
     return jsonify({"message": "Room not found"}), 404
 
 
-@ rooms_bp.route("/rooms/name/<string:name>", methods=["GET"])
+@rooms_bp.route("/rooms/name/<string:name>", methods=["GET"])
 def get_existing_room_by_name(name: str):
     db: Session = next(get_db())
     room = get_room_by_name(db, name)
@@ -44,7 +44,7 @@ def get_existing_room_by_name(name: str):
     return jsonify({"message": "Room not found"}), 404
 
 
-@ rooms_bp.route("/rooms", methods=["GET"])
+@rooms_bp.route("/rooms", methods=["GET"])
 def get_all_rooms():
     db: Session = next(get_db())
     skip = int(request.args.get("skip", 0))
@@ -55,7 +55,7 @@ def get_all_rooms():
     )
 
 
-@ rooms_bp.route("/rooms/<int:room_id>", methods=["PUT"])
+@rooms_bp.route("/rooms/<int:room_id>", methods=["PUT"])
 def update_existing_room(room_id: int):
     db: Session = next(get_db())
     room_data = MeetingRoomUpdate(**request.json)
@@ -65,7 +65,7 @@ def update_existing_room(room_id: int):
     return jsonify({"message": "Room not found"}), 404
 
 
-@ rooms_bp.route("/rooms/<int:room_id>", methods=["DELETE"])
+@rooms_bp.route("/rooms/<int:room_id>", methods=["DELETE"])
 def delete_existing_room(room_id: int):
     db: Session = next(get_db())
     if delete_room(db, room_id):
