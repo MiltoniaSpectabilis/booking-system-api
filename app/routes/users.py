@@ -3,18 +3,19 @@ from app.schemas.user import UserCreate, UserUpdate, UserInDB
 from app.services.user import (
     get_user_by_id,
     get_user_by_username,
-    create_user,
-    update_user,
+    create_user, update_user,
     delete_user,
-    get_users,
+    get_users
 )
 from app.utils.database import get_db
 from sqlalchemy.orm import Session
+from app.utils.auth import admin_required
 
 users_bp = Blueprint("users", __name__)
 
 
 @users_bp.route("/users", methods=["POST"])
+@admin_required
 def create_new_user():
     db: Session = next(get_db())
     user_data = UserCreate(**request.json)
@@ -23,6 +24,7 @@ def create_new_user():
 
 
 @users_bp.route("/users/<int:user_id>", methods=["GET"])
+@admin_required
 def get_existing_user(user_id: int):
     db: Session = next(get_db())
     user = get_user_by_id(db, user_id)
@@ -32,6 +34,7 @@ def get_existing_user(user_id: int):
 
 
 @users_bp.route("/users/username/<string:username>", methods=["GET"])
+@admin_required
 def get_existing_user_by_username(username: str):
     db: Session = next(get_db())
     user = get_user_by_username(db, username)
@@ -41,6 +44,7 @@ def get_existing_user_by_username(username: str):
 
 
 @users_bp.route("/users", methods=["GET"])
+@admin_required
 def get_all_users():
     db: Session = next(get_db())
     skip = int(request.args.get("skip", 0))
@@ -50,6 +54,7 @@ def get_all_users():
 
 
 @users_bp.route("/users/<int:user_id>", methods=["PUT"])
+@admin_required
 def update_existing_user(user_id: int):
     db: Session = next(get_db())
     user_data = UserUpdate(**request.json)
@@ -60,6 +65,7 @@ def update_existing_user(user_id: int):
 
 
 @users_bp.route("/users/<int:user_id>", methods=["DELETE"])
+@admin_required
 def delete_existing_user(user_id: int):
     db: Session = next(get_db())
     if delete_user(db, user_id):
