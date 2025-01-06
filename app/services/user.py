@@ -31,8 +31,12 @@ def update_user(db: Session, user_id: int, user: UserUpdate):
     if not db_user:
         return None
     update_data = user.dict(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(db_user, key, value)
+    if "username" in update_data:
+        db_user.username = update_data["username"]
+    if "is_admin" in update_data:
+        db_user.is_admin = update_data["is_admin"]
+    # for key, value in update_data.items():
+    #     setattr(db_user, key, value)
     db.commit()
     db.refresh(db_user)
     return db_user
