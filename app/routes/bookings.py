@@ -23,7 +23,7 @@ def create_new_booking():
         booking = create_booking(db, booking_data)
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
-    return jsonify(BookingInDB.from_attributes(booking).dict()), 201
+    return jsonify(BookingInDB.from_orm(booking).dict()), 201
 
 
 @bookings_bp.route("/bookings/<int:booking_id>", methods=["GET"])
@@ -31,7 +31,7 @@ def get_existing_booking(booking_id: int):
     db: Session = next(get_db())
     booking = get_booking_by_id(db, booking_id)
     if booking:
-        return jsonify(BookingInDB.from_attributes(booking).dict())
+        return jsonify(BookingInDB.from_orm(booking).dict())
     return jsonify({"message": "Booking not found"}), 404
 
 
@@ -42,7 +42,7 @@ def get_bookings_for_user(user_id: int):
     limit = int(request.args.get("limit", 100))
     bookings = get_bookings_by_user_id(db, user_id, skip, limit)
     return jsonify(
-        [BookingInDB.from_attributes(booking).dict() for booking in bookings]
+        [BookingInDB.from_orm(booking).dict() for booking in bookings]
     )
 
 
@@ -53,7 +53,7 @@ def get_bookings_for_room(room_id: int):
     limit = int(request.args.get("limit", 100))
     bookings = get_bookings_by_room_id(db, room_id, skip, limit)
     return jsonify(
-        [BookingInDB.from_attributes(booking).dict() for booking in bookings]
+        [BookingInDB.from_orm(booking).dict() for booking in bookings]
     )
 
 
@@ -64,7 +64,7 @@ def get_all_bookings():
     limit = int(request.args.get("limit", 100))
     bookings = get_bookings(db, skip, limit)
     return jsonify(
-        [BookingInDB.from_attributes(booking).dict() for booking in bookings]
+        [BookingInDB.from_orm(booking).dict() for booking in bookings]
     )
 
 
@@ -74,7 +74,7 @@ def update_existing_booking(booking_id: int):
     booking_data = BookingUpdate(**request.json)
     updated_booking = update_booking(db, booking_id, booking_data)
     if updated_booking:
-        return jsonify(BookingInDB.from_attributes(updated_booking).dict())
+        return jsonify(BookingInDB.from_orm(updated_booking).dict())
     return jsonify({"message": "Booking not found"}), 404
 
 

@@ -20,7 +20,7 @@ def register_user():
     if get_user_by_username(db, user_data.username):
         return jsonify({"message": "Username already exists"}), 400
     user = create_user(db, user_data)
-    return jsonify(UserInDB.from_attributes(user).dict()), 201
+    return jsonify(UserInDB.from_orm(user).dict()), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
