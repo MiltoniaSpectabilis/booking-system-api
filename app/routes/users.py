@@ -10,6 +10,7 @@ from app.services.user import (
 from app.utils.database import get_db
 from sqlalchemy.orm import Session
 from app.utils.auth import admin_required
+from pydantic import ValidationError
 
 users_bp = Blueprint("users", __name__)
 
@@ -57,11 +58,18 @@ def get_all_users():
 @admin_required
 def update_existing_user(user_id: int):
     db: Session = next(get_db())
-    user_data = UserUpdate(**request.json)
+    user = get_user_by_id(db, user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    update_data = request.get_json()
+    try:
+        user_data = UserUpdate(**update_data)
+    except ValidationError as e:
+        return jsonify(e.errors()), 400
+
     updated_user = update_user(db, user_id, user_data)
-    if updated_user:
-        return jsonify(UserInDB.from_orm(updated_user).dict())
-    return jsonify({"message": "User not found"}), 404
+    return jsonify(UserInDB.from_orm(updated_user).dict())
 
 
 @users_bp.route("/users/<int:user_id>", methods=["DELETE"])
