@@ -1,3 +1,8 @@
+"""
+This package contains the service layer, which provides business logic
+for interacting with the database models.
+"""
+
 from .user import (
     get_user_by_id,
     get_user_by_username,

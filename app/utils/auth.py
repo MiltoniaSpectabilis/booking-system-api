@@ -1,3 +1,7 @@
+"""
+This module provides authentication utilities using JWT.
+"""
+
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from app.services.user import get_user_by_username
@@ -13,6 +17,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    """
+    Creates a JWT access token.
+    """
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -24,6 +31,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 
 def verify_token(token: str, credentials_exception):
+    """
+    Verifies a JWT token.
+    """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -35,6 +45,9 @@ def verify_token(token: str, credentials_exception):
 
 
 def get_current_user(token: str):
+    """
+    Gets the current user from a JWT token.
+    """
     db: Session = next(get_db())
     credentials_exception = Exception("Could not validate credentials")
     username = verify_token(token, credentials_exception)
@@ -45,21 +58,20 @@ def get_current_user(token: str):
 
 
 def admin_required(f):
+    """
+    Decorator to protect routes that require admin access.
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token:
-            return jsonify({"message": "Token is missing!"}), 401
-
+            return jsonify({"message": "Token is missing!"}), 403
         try:
-            if token.startswith("Bearer "):
-                token = token.split(" ")[1]
-            else:
-                raise JWTError
+            token = token.split(" ")[1]
             current_user = get_current_user(token)
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
         except JWTError:
-            return jsonify({"message": "Invalid token!"}), 401
+            return jsonify({"message": "Invalid token!"}), 403
         return f(*args, **kwargs)
     return decorated_function

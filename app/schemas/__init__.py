@@ -1,3 +1,7 @@
+"""
+This package contains Pydantic schemas for data validation and serialization.
+"""
+
 from .user import (
     UserBase,
     UserCreate,

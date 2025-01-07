@@ -1,3 +1,7 @@
+"""
+This module provides utilities for database connection and setup.
+"""
+
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
@@ -18,6 +22,9 @@ Base = declarative_base()
 
 
 def get_db():
+    """
+    Provides a database session for dependency injection.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -26,4 +33,7 @@ def get_db():
 
 
 def init_db():
+    """
+    Creates all tables in the database.
+    """
     Base.metadata.create_all(bind=engine)
