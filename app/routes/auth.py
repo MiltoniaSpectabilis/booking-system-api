@@ -20,7 +20,7 @@ def register_user():
     if get_user_by_username(db, user_data.username):
         return jsonify({"message": "Username already exists"}), 400
     user = create_user(db, user_data)
-    return jsonify(UserInDB.from_orm(user).dict()), 201
+    return jsonify(UserInDB.model_validate(user).model_dump()), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -35,4 +35,4 @@ def login_user():
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return jsonify(dict(access_token=access_token)), 200
+    return jsonify(access_token=access_token), 200

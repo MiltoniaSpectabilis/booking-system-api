@@ -21,7 +21,7 @@ def create_new_user():
     db: Session = next(get_db())
     user_data = UserCreate(**request.json)
     user = create_user(db, user_data)
-    return jsonify(UserInDB.from_orm(user).dict()), 201
+    return jsonify(UserInDB.model_validate(user).model_dump()), 201
 
 
 @users_bp.route("/users/<int:user_id>", methods=["GET"])
@@ -30,7 +30,7 @@ def get_existing_user(user_id: int):
     db: Session = next(get_db())
     user = get_user_by_id(db, user_id)
     if user:
-        return jsonify(UserInDB.from_orm(user).dict())
+        return jsonify(UserInDB.model_validate(user).model_dump())
     return jsonify({"message": "User not found"}), 404
 
 
@@ -40,7 +40,7 @@ def get_existing_user_by_username(username: str):
     db: Session = next(get_db())
     user = get_user_by_username(db, username)
     if user:
-        return jsonify(UserInDB.from_orm(user).dict())
+        return jsonify(UserInDB.model_validate(user).model_dump())
     return jsonify({"message": "User not found"}), 404
 
 
@@ -51,7 +51,8 @@ def get_all_users():
     skip = int(request.args.get("skip", 0))
     limit = int(request.args.get("limit", 100))
     users = get_users(db, skip, limit)
-    return jsonify([UserInDB.from_orm(user).dict() for user in users])
+    return jsonify([UserInDB.model_validate(user).model_dump()
+                    for user in users])
 
 
 @users_bp.route("/users/<int:user_id>", methods=["PUT"])
@@ -69,7 +70,7 @@ def update_existing_user(user_id: int):
         return jsonify(e.errors()), 400
 
     updated_user = update_user(db, user_id, user_data)
-    return jsonify(UserInDB.from_orm(updated_user).dict())
+    return jsonify(UserInDB.model_validate(updated_user).model_dump())
 
 
 @users_bp.route("/users/<int:user_id>", methods=["DELETE"])

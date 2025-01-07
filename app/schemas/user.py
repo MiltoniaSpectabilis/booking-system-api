@@ -14,8 +14,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     is_admin: Optional[bool] = None
-    username: Optional[constr(min_length=3, max_length=50)
-                       ] = None
+    username: Optional[constr(min_length=3, max_length=50)] = None
 
 
 class UserInDB(UserBase):

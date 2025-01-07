@@ -22,8 +22,11 @@ rooms_bp = Blueprint("rooms", __name__)
 def create_new_room():
     db: Session = next(get_db())
     room_data = MeetingRoomCreate(**request.json)
-    room = create_room(db, room_data)
-    return jsonify(MeetingRoomInDB.from_orm(room).dict()), 201
+    try:
+        room = create_room(db, room_data)
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+    return jsonify(MeetingRoomInDB.model_validate(room).model_dump()), 201
 
 
 @rooms_bp.route("/rooms/<int:room_id>", methods=["GET"])
@@ -31,7 +34,7 @@ def get_existing_room(room_id: int):
     db: Session = next(get_db())
     room = get_room_by_id(db, room_id)
     if room:
-        return jsonify(MeetingRoomInDB.from_orm(room).dict())
+        return jsonify(MeetingRoomInDB.model_validate(room).model_dump())
     return jsonify({"message": "Room not found"}), 404
 
 
@@ -40,7 +43,7 @@ def get_existing_room_by_name(name: str):
     db: Session = next(get_db())
     room = get_room_by_name(db, name)
     if room:
-        return jsonify(MeetingRoomInDB.from_orm(room).dict())
+        return jsonify(MeetingRoomInDB.model_validate(room).model_dump())
     return jsonify({"message": "Room not found"}), 404
 
 
@@ -51,7 +54,7 @@ def get_all_rooms():
     limit = int(request.args.get("limit", 100))
     rooms = get_rooms(db, skip, limit)
     return jsonify(
-        [MeetingRoomInDB.from_orm(room).dict() for room in rooms]
+        [MeetingRoomInDB.model_validate(room).model_dump() for room in rooms]
     )
 
 
@@ -61,7 +64,9 @@ def update_existing_room(room_id: int):
     room_data = MeetingRoomUpdate(**request.json)
     updated_room = update_room(db, room_id, room_data)
     if updated_room:
-        return jsonify(MeetingRoomInDB.from_orm(updated_room).dict())
+        return jsonify(
+            MeetingRoomInDB.model_validate(updated_room).model_dump()
+        )
     return jsonify({"message": "Room not found"}), 404
 
 
