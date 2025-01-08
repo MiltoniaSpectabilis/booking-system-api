@@ -57,6 +57,45 @@ def get_current_user(token: str):
     return user
 
 
+def token_required(f):
+    """
+    Decorator to ensure the request includes a valid JWT token.
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"message": "Token is missing!"}), 403
+        try:
+            token = token.split(" ")[1]
+            current_user = get_current_user(token)
+        except JWTError:
+            return jsonify({"message": "Invalid token!"}), 403
+        return f(current_user, *args, **kwargs)
+    return decorated_function
+
+
+def user_required(f):
+    """
+    Decorator to ensure the current user matches the user ID in the request.
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"message": "Token is missing!"}), 403
+        try:
+            token = token.split(" ")[1]
+            current_user = get_current_user(token)
+            user_id = kwargs.get('user_id')
+            if current_user.id != int(user_id):
+                return jsonify({"message": "Access denied!"}), 403
+        except JWTError:
+            return jsonify({"message": "Invalid token!"}), 403
+        return f(current_user, *args, **kwargs)
+    return decorated_function
+
+
 def admin_required(f):
     """
     Decorator to protect routes that require admin access.
