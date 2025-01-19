@@ -105,5 +105,5 @@ def delete_existing_user(user_id: int):
     """
     db: Session = next(get_db())
     if delete_user(db, user_id):
-        return jsonify({"message": "User deleted"})
+        return "", 204
     return jsonify({"message": "User not found"}), 404

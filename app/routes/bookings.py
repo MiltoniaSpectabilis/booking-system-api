@@ -137,5 +137,5 @@ def delete_existing_booking(current_user, booking_id: int):
     if not current_user.is_admin and booking.user_id != current_user.id:
         return jsonify({"message": "Unauthorized to delete this booking"}), 403
     if cancel_booking(db, booking_id):
-        return jsonify({"message": "Booking cancelled successfully"})
+        return "", 204
     return jsonify({"message": "Booking not found"}), 404

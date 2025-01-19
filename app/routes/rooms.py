@@ -103,5 +103,5 @@ def delete_existing_room(room_id: int):
     """
     db: Session = next(get_db())
     if delete_room(db, room_id):
-        return jsonify({"message": "Room deleted"})
+        return "", 204
     return jsonify({"message": "Room not found"}), 404

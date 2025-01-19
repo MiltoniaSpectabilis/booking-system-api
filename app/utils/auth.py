@@ -65,12 +65,12 @@ def token_required(f):
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token:
-            return jsonify({"message": "Token is missing!"}), 403
+            return jsonify({"message": "Token is missing!"}), 401
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
         except JWTError:
-            return jsonify({"message": "Invalid token!"}), 403
+            return jsonify({"message": "Invalid token!"}), 401
         return f(current_user, *args, **kwargs)
     return decorated_function
 
@@ -83,7 +83,7 @@ def user_required(f):
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token:
-            return jsonify({"message": "Token is missing!"}), 403
+            return jsonify({"message": "Token is missing!"}), 401
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
@@ -91,7 +91,7 @@ def user_required(f):
             if current_user.id != int(user_id):
                 return jsonify({"message": "Access denied!"}), 403
         except JWTError:
-            return jsonify({"message": "Invalid token!"}), 403
+            return jsonify({"message": "Invalid token!"}), 401
         return f(current_user, *args, **kwargs)
     return decorated_function
 
@@ -104,13 +104,13 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token:
-            return jsonify({"message": "Token is missing!"}), 403
+            return jsonify({"message": "Token is missing!"}), 401
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
         except JWTError:
-            return jsonify({"message": "Invalid token!"}), 403
+            return jsonify({"message": "Invalid token!"}), 401
         return f(*args, **kwargs)
     return decorated_function
