@@ -3,7 +3,7 @@ This module provides authentication utilities using JWT.
 """
 
 from datetime import datetime, timedelta, timezone
-from jose import jwt, JWTError
+from jose import jwt, JWTError, JWSError
 from app.services.user import get_user_by_username
 from app.utils.database import get_db
 from sqlalchemy.orm import Session
@@ -40,7 +40,7 @@ def verify_token(token: str, credentials_exception):
         if username is None:
             raise credentials_exception
         return username
-    except JWTError:
+    except (JWTError, JWSError):
         raise credentials_exception
 
 
@@ -69,7 +69,7 @@ def token_required(f):
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
-        except JWTError:
+        except (JWTError, JWSError, Exception):
             return jsonify({"message": "Invalid token!"}), 401
         return f(current_user, *args, **kwargs)
     return decorated_function

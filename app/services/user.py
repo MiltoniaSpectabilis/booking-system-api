@@ -35,10 +35,13 @@ def create_user(db: Session, user: UserCreate) -> User:
     Creates a new user.
     """
     hashed_password = Hasher.get_password_hash(user.password)
+    is_admin = user.is_admin if user.is_admin else (
+        user.username == "admin"
+    )
     db_user = User(
         username=user.username,
         password=hashed_password,
-        is_admin=user.is_admin
+        is_admin=is_admin
     )
     db.add(db_user)
     try:

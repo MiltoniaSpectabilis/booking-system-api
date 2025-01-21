@@ -2,6 +2,7 @@
 This module contains authentication-related routes.
 """
 
+from app.models.user import User
 from flask import Blueprint, jsonify, request
 from app.schemas.user import UserCreate, UserInDB
 from app.services.user import create_user, get_user_by_username
@@ -21,6 +22,9 @@ def register_user():
     """
     db: Session = next(get_db())
     user_data = UserCreate(**request.json)
+    is_first_user = db.query(User).count() == 0
+    if is_first_user:
+        user_data.is_admin = True
     if get_user_by_username(db, user_data.username):
         return jsonify({"message": "Username already exists"}), 409
     user = create_user(db, user_data)
