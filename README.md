@@ -343,3 +343,4 @@ Authorization: Bearer <access_token>
 - **401 Unauthorized**: Missing or invalid token.
 - **403 Forbidden**: Insufficient permissions.
 - **404 Not Found**: Resource not found.
+- **409 Conflict**: Resource already exists or scheduling conflict.

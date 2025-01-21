@@ -37,6 +37,8 @@ def create_new_booking(current_user):
         booking = create_booking(db, booking_data)
         return jsonify(BookingInDB.model_validate(booking).model_dump()), 201
     except ValueError as e:
+        if "not available" in str(e):
+            return jsonify({"message": str(e)}), 409
         return jsonify({"message": str(e)}), 400
 
 

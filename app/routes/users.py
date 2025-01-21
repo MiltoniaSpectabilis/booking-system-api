@@ -33,6 +33,10 @@ def create_new_user():
         return jsonify(UserInDB.model_validate(user).model_dump()), 201
     except ValidationError as e:
         return jsonify(e.errors()), 400
+    except ValueError as e:
+        if "already exists" in str(e):
+            return jsonify({"message": str(e)}), 409
+        return jsonify({"message": str(e)}), 400
 
 
 @users_bp.route("/<int:user_id>", methods=["GET"])

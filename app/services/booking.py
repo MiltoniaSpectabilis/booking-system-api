@@ -87,6 +87,17 @@ def update_booking(
     if not db_booking:
         return None
     update_data = booking.model_dump(exclude_unset=True)
+    new_start = update_data.get("start_time", db_booking.start_time)
+    new_end = update_data.get("end_time", db_booking.end_time)
+    if not is_room_available(
+        db,
+        db_booking.room_id,
+        new_start,
+        new_end,
+        exclude_booking_id=db_booking.id
+    ):
+        raise ValueError("Room is not available during the specified time")
+
     for key, value in update_data.items():
         setattr(db_booking, key, value)
     db.commit()
@@ -107,12 +118,17 @@ def cancel_booking(db: Session, booking_id: int) -> bool:
 
 
 def is_room_available(
-    db: Session, room_id: int, start_time: datetime, end_time: datetime
+    db: Session,
+    room_id: int,
+    start_time: datetime,
+    end_time: datetime,
+    exclude_booking_id: int = None
 ) -> bool:
     """
-    Checks if a room is available during a given time slot.
+    Checks if a room is available during a given time slot,
+    excluding a specific booking.
     """
-    overlapping_bookings = db.query(Booking).filter(
+    query = db.query(Booking).filter(
         and_(
             Booking.room_id == room_id,
             or_(
@@ -124,5 +140,8 @@ def is_room_available(
                      Booking.end_time <= end_time)
             )
         )
-    ).all()
+    )
+    if exclude_booking_id:
+        query = query.filter(Booking.id != exclude_booking_id)
+    overlapping_bookings = query.all()
     return not overlapping_bookings
