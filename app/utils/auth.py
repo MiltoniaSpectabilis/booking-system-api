@@ -97,6 +97,9 @@ def user_required(f):
 
 
 def admin_required(f):
+    """
+     Decorator to protect routes that require admin access.
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
