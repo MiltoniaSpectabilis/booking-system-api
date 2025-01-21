@@ -69,7 +69,7 @@ def token_required(f):
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
-        except (JWTError, JWSError, Exception):
+        except Exception:
             return jsonify({"message": "Invalid token!"}), 401
         return f(current_user, *args, **kwargs)
     return decorated_function
@@ -90,16 +90,13 @@ def user_required(f):
             user_id = kwargs.get('user_id')
             if current_user.id != int(user_id):
                 return jsonify({"message": "Access denied!"}), 403
-        except JWTError:
+        except Exception:
             return jsonify({"message": "Invalid token!"}), 401
         return f(current_user, *args, **kwargs)
     return decorated_function
 
 
 def admin_required(f):
-    """
-    Decorator to protect routes that require admin access.
-    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
@@ -110,7 +107,7 @@ def admin_required(f):
             current_user = get_current_user(token)
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
-        except JWTError:
+        except Exception:
             return jsonify({"message": "Invalid token!"}), 401
         return f(*args, **kwargs)
     return decorated_function
