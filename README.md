@@ -72,6 +72,12 @@ Example:
 Authorization: Bearer <access_token>
 ```
 
+### **First User Admin Policy**
+
+- The first user to register in the system automatically receives admin privileges
+- Subsequent users are created as non-admin unless explicitly granted admin rights by an existing admin
+- This ensures there's always at least one administrative account in the system
+
 ---
 
 ## **API Endpoints**
@@ -339,8 +345,11 @@ Authorization: Bearer <access_token>
 ---
 
 ## **Error Handling**
-- **400 Bad Request**: Invalid input data.
-- **401 Unauthorized**: Missing or invalid token.
-- **403 Forbidden**: Insufficient permissions.
-- **404 Not Found**: Resource not found.
-- **409 Conflict**: Resource already exists or scheduling conflict.
+
+The API uses standard HTTP status codes to indicate the success or failure of requests:
+
+- **400 Bad Request**: Invalid input data
+- **401 Unauthorized**: Missing or invalid token
+- **403 Forbidden**: Insufficient permissions
+- **404 Not Found**: Resource not found
+- **409 Conflict**: Resource already exists or scheduling conflict
