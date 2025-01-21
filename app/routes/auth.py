@@ -22,7 +22,7 @@ def register_user():
     db: Session = next(get_db())
     user_data = UserCreate(**request.json)
     if get_user_by_username(db, user_data.username):
-        return jsonify({"message": "Username already exists"}), 400
+        return jsonify({"message": "Username already exists"}), 409
     user = create_user(db, user_data)
     return jsonify(UserInDB.model_validate(user).model_dump()), 201
 

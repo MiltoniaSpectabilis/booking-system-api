@@ -47,7 +47,7 @@ def create_user(db: Session, user: UserCreate) -> User:
         return db_user
     except IntegrityError:
         db.rollback()
-        raise ValueError("A user with this username already exists.")
+        raise ValueError("Username already exists.")
 
 
 def update_user(db: Session, user_id: int, user: UserUpdate) -> User | None:

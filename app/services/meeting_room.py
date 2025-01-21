@@ -44,7 +44,7 @@ def create_room(db: Session, room: MeetingRoomCreate) -> MeetingRoom:
     except IntegrityError as e:
         db.rollback()
         if "ix_meeting_rooms_name" in str(e):
-            raise ValueError("A room with this name already exists.") from e
+            raise ValueError("Room name already exists.") from e
         else:
             raise ValueError(
                 "An error occurred while creating the room.") from e

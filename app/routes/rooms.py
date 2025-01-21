@@ -17,6 +17,7 @@ from app.services.meeting_room import (
     get_rooms,
 )
 from app.utils.database import get_db
+from app.utils.auth import admin_required
 from sqlalchemy.orm import Session
 from pydantic import ValidationError
 
@@ -24,6 +25,7 @@ rooms_bp = Blueprint("rooms", __name__)
 
 
 @rooms_bp.route("/", methods=["POST"])
+@admin_required
 def create_new_room():
     """
     Creates a new meeting room.
@@ -36,11 +38,14 @@ def create_new_room():
     try:
         room = create_room(db, room_data)
     except ValueError as e:
+        if "already exists" in str(e):
+            return jsonify({"message": str(e)}), 409
         return jsonify({"message": str(e)}), 400
     return jsonify(MeetingRoomInDB.model_validate(room).model_dump()), 201
 
 
 @rooms_bp.route("/<int:room_id>", methods=["GET"])
+@admin_required
 def get_existing_room(room_id: int):
     """
     Retrieves a meeting room by ID.
@@ -53,6 +58,7 @@ def get_existing_room(room_id: int):
 
 
 @rooms_bp.route("/name/<string:name>", methods=["GET"])
+@admin_required
 def get_existing_room_by_name(name: str):
     """
     Retrieves a meeting room by name.
@@ -65,6 +71,7 @@ def get_existing_room_by_name(name: str):
 
 
 @rooms_bp.route("/", methods=["GET"])
+@admin_required
 def get_all_rooms():
     """
     Retrieves all meeting rooms.
@@ -79,6 +86,7 @@ def get_all_rooms():
 
 
 @rooms_bp.route("/<int:room_id>", methods=["PUT"])
+@admin_required
 def update_existing_room(room_id: int):
     """
     Updates an existing meeting room.
@@ -97,6 +105,7 @@ def update_existing_room(room_id: int):
 
 
 @rooms_bp.route("/<int:room_id>", methods=["DELETE"])
+@admin_required
 def delete_existing_room(room_id: int):
     """
     Deletes a meeting room.
