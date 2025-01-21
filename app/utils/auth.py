@@ -110,6 +110,7 @@ def admin_required(f):
             current_user = get_current_user(token)
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
+            return f(current_user, *args, **kwargs)
         except Exception:
             return jsonify({"message": "Invalid token!"}), 401
         return f(*args, **kwargs)

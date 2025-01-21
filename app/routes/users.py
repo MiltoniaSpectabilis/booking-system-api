@@ -22,7 +22,7 @@ users_bp = Blueprint("users", __name__)
 
 @users_bp.route("/", methods=["POST"])
 @admin_required
-def create_new_user():
+def create_new_user(current_user):
     """
     Creates a new user (admin only).
     """
@@ -41,7 +41,7 @@ def create_new_user():
 
 @users_bp.route("/<int:user_id>", methods=["GET"])
 @admin_required
-def get_existing_user(user_id: int):
+def get_existing_user(current_user, user_id: int):
     """
     Retrieves a user by ID (admin only).
     """
@@ -67,7 +67,7 @@ def get_existing_user_by_username(username: str):
 
 @users_bp.route("/", methods=["GET"])
 @admin_required
-def get_all_users():
+def get_all_users(current_user):
     """
     Retrieves all users (admin only).
     """

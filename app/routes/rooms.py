@@ -26,7 +26,7 @@ rooms_bp = Blueprint("rooms", __name__)
 
 @rooms_bp.route("/", methods=["POST"])
 @admin_required
-def create_new_room():
+def create_new_room(current_user):
     """
     Creates a new meeting room.
     """
@@ -46,7 +46,7 @@ def create_new_room():
 
 @rooms_bp.route("/<int:room_id>", methods=["GET"])
 @admin_required
-def get_existing_room(room_id: int):
+def get_existing_room(current_user, room_id: int):
     """
     Retrieves a meeting room by ID.
     """

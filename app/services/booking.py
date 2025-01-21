@@ -48,7 +48,9 @@ def get_bookings_by_room_id(
     )
 
 
-def get_bookings(db: Session, skip: int = 0, limit: int = 100) -> list[Booking]:
+def get_bookings(
+        db: Session, skip: int = 0, limit: int = 100
+) -> list[Booking]:
     """
     Retrieves a list of all bookings.
     """
