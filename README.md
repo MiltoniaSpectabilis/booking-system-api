@@ -1,10 +1,8 @@
-# **Booking System API Documentation**
+# Meeting Room Booking System API Documentation
 
 This API provides functionality for managing users, meeting rooms, and bookings. It supports role-based access control, where non-admin users can only access their own data, and admins have full access.
 
----
-
-## **Table of Contents**
+## Table of Contents
 1. [Getting Started](#getting-started)
    - [Prerequisites](#prerequisites)
    - [Installation](#installation)
@@ -13,48 +11,47 @@ This API provides functionality for managing users, meeting rooms, and bookings.
 3. [API Endpoints](#api-endpoints)
    - [Authentication](#authentication-endpoints)
    - [Bookings](#bookings-endpoints)
-   - [Users](#users-endpoints)
-   - [Meeting Rooms](#meeting-rooms-endpoints)
-4. [Error Handling](#error-handling)
-5. [Examples](#examples)
-6. [Contributing](#contributing)
-7. [License](#license)
+   - [Users](#users-endpoints-admin-only)
+   - [Meeting Rooms](#meeting-rooms-endpoints-admin-only)
+4. [Status Codes](#status-codes)
 
 ---
 
-## **Getting Started**
+## Getting Started
 
-### **Prerequisites**
+### Prerequisites
 - Python 3.8+
 - MySQL Server
 - `pip` for installing dependencies
 
-### **Installation**
+### Installation
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/MiltoniaSpectabilis/booking-system-api.git
-   cd booking-system-api
-   ```
+```bash
+git clone https://github.com/MiltoniaSpectabilis/booking-system-api.git
+cd booking-system-api
+```
 
 2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
+```bash
+python -m venv venv
+source venv/bin/activate
+```
 
 3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
 4. Set up environment variables:
-   Create a `.env` file in the root directory with the following variables:
-   ```plaintext
-   DATABASE_URL=mysql+mysqlconnector://user:password@localhost/your_database_name
-   SECRET_KEY=your_secret_key
-   ```
+Create a `.env` file in the root directory with the following variables:
+```plaintext
+DATABASE_URL=mysql+mysqlconnector://user:password@localhost/your_database_name
+SECRET_KEY=your_secret_key
+```
 
-### **Running the Application**
+### Running the Application
+
 Start the Flask development server:
 ```bash
 python -m app.main
@@ -64,7 +61,8 @@ The API will be available at `http://127.0.0.1:5000`.
 
 ---
 
-## **Authentication**
+## Authentication
+
 All endpoints (except `/auth/register` and `/auth/login`) require a valid JWT token in the `Authorization` header.
 
 Example:
@@ -72,7 +70,7 @@ Example:
 Authorization: Bearer <access_token>
 ```
 
-### **First User Admin Policy**
+### First User Admin Policy
 
 - The first user to register in the system automatically receives admin privileges
 - Subsequent users are created as non-admin unless explicitly granted admin rights by an existing admin
@@ -80,12 +78,12 @@ Authorization: Bearer <access_token>
 
 ---
 
-## **API Endpoints**
+## API Endpoints
 
-### **Authentication Endpoints**
+### Authentication Endpoints
 
-### Register User
-Creates a new user account in the system.
+#### Register User
+**Description:** Creates a new user account in the system.
 
 **Endpoint:** `POST /api/auth/register`
 
@@ -106,8 +104,10 @@ Creates a new user account in the system.
 }
 ```
 
-### Login
-Authenticates a user and provides an access token.
+---
+
+#### Login
+**Description:** Authenticates a user and provides an access token.
 
 **Endpoint:** `POST /api/auth/login`
 
@@ -126,10 +126,12 @@ Authenticates a user and provides an access token.
 }
 ```
 
-## Bookings
+---
 
-### Create Booking
-Creates a new room booking.
+### Bookings Endpoints
+
+#### Create Booking
+**Description:** Creates a new room booking.
 
 **Endpoint:** `POST /api/bookings/`
 
@@ -154,8 +156,10 @@ Creates a new room booking.
 }
 ```
 
-### Get Booking by ID
-Retrieves details of a specific booking.
+---
+
+#### Get Booking by ID
+**Description:** Retrieves details of a specific booking.
 
 **Endpoint:** `GET /api/bookings/{id}`
 
@@ -170,8 +174,10 @@ Retrieves details of a specific booking.
 }
 ```
 
-### Get User Bookings
-Retrieves all bookings for a specific user.
+---
+
+#### Get User Bookings
+**Description:** Retrieves all bookings for a specific user.
 
 **Endpoint:** `GET /api/bookings/user/{user_id}`
 
@@ -188,8 +194,10 @@ Retrieves all bookings for a specific user.
 ]
 ```
 
-### Get Room Bookings (Admin Only)
-Retrieves all bookings for a specific room.
+---
+
+#### Get Room Bookings (Admin Only)
+**Description:** Retrieves all bookings for a specific room.
 
 **Endpoint:** `GET /api/bookings/room/{room_id}`
 
@@ -206,8 +214,10 @@ Retrieves all bookings for a specific room.
 ]
 ```
 
-### Update Booking
-Updates an existing booking's time slots.
+---
+
+#### Update Booking
+**Description:** Updates an existing booking's time slots.
 
 **Endpoint:** `PUT /api/bookings/{id}`
 
@@ -230,17 +240,21 @@ Updates an existing booking's time slots.
 }
 ```
 
-### Delete Booking
-Removes a booking from the system.
+---
+
+#### Delete Booking
+**Description:** Removes a booking from the system.
 
 **Endpoint:** `DELETE /api/bookings/{id}`
 
 **Response:** `204 No Content`
 
-## Users (Admin Only)
+---
 
-### Create User
-Creates a new user account (admin access required).
+### Users Endpoints (Admin Only)
+
+#### Create User
+**Description:** Creates a new user account (admin access required).
 
 **Endpoint:** `POST /api/users/`
 
@@ -262,8 +276,10 @@ Creates a new user account (admin access required).
 }
 ```
 
-### Get User by ID
-Retrieves user details by ID.
+---
+
+#### Get User by ID
+**Description:** Retrieves user details by ID.
 
 **Endpoint:** `GET /api/users/{id}`
 
@@ -276,8 +292,10 @@ Retrieves user details by ID.
 }
 ```
 
-### Get All Users
-Retrieves a list of all users.
+---
+
+#### Get All Users
+**Description:** Retrieves a list of all users.
 
 **Endpoint:** `GET /api/users/`
 
@@ -292,8 +310,10 @@ Retrieves a list of all users.
 ]
 ```
 
-### Update User
-Updates user information.
+---
+
+#### Update User
+**Description:** Updates user information.
 
 **Endpoint:** `PUT /api/users/{id}`
 
@@ -314,17 +334,21 @@ Updates user information.
 }
 ```
 
-### Delete User
-Removes a user from the system.
+---
+
+#### Delete User
+**Description:** Removes a user from the system.
 
 **Endpoint:** `DELETE /api/users/{id}`
 
 **Response:** `204 No Content`
 
-## Meeting Rooms (Admin Only)
+---
 
-### Create Room
-Creates a new meeting room.
+### Meeting Rooms Endpoints (Admin Only)
+
+#### Create Room
+**Description:** Creates a new meeting room.
 
 **Endpoint:** `POST /api/rooms/`
 
@@ -347,8 +371,10 @@ Creates a new meeting room.
 }
 ```
 
-### Get Room by ID
-Retrieves room details by ID.
+---
+
+#### Get Room by ID
+**Description:** Retrieves room details by ID.
 
 **Endpoint:** `GET /api/rooms/{id}`
 
@@ -362,8 +388,10 @@ Retrieves room details by ID.
 }
 ```
 
-### Get All Rooms
-Retrieves a list of all meeting rooms.
+---
+
+#### Get All Rooms
+**Description:** Retrieves a list of all meeting rooms.
 
 **Endpoint:** `GET /api/rooms/`
 
@@ -379,8 +407,10 @@ Retrieves a list of all meeting rooms.
 ]
 ```
 
-### Update Room
-Updates room information.
+---
+
+#### Update Room
+**Description:** Updates room information.
 
 **Endpoint:** `PUT /api/rooms/{id}`
 
@@ -403,12 +433,16 @@ Updates room information.
 }
 ```
 
-### Delete Room
-Removes a room from the system.
+---
+
+#### Delete Room
+**Description:** Removes a room from the system.
 
 **Endpoint:** `DELETE /api/rooms/{id}`
 
 **Response:** `204 No Content`
+
+---
 
 ## Status Codes
 
@@ -426,4 +460,3 @@ The API uses standard HTTP response codes to indicate the success or failure of 
 | 409 | Conflict | Booking conflict or duplicate data |
 | 500 | Server Error | Internal server issues |
 
----
