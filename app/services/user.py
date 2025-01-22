@@ -35,13 +35,13 @@ def create_user(db: Session, user: UserCreate) -> User:
     Creates a new user.
     """
     hashed_password = Hasher.get_password_hash(user.password)
-    is_admin = user.is_admin if user.is_admin else (
-        user.username == "admin"
-    )
+    # is_admin = user.is_admin if user.is_admin else (
+    #     user.username == "admin"
+    # )
     db_user = User(
         username=user.username,
         password=hashed_password,
-        is_admin=is_admin
+        is_admin=user.is_admin
     )
     db.add(db_user)
     try:
@@ -61,6 +61,11 @@ def update_user(db: Session, user_id: int, user: UserUpdate) -> User | None:
     if not db_user:
         return None
 
+    if db_user.id == 1 and user.is_admin is False:
+        raise ValueError(
+            "Cannot revoke admin status from initial administrator"
+        )
+
     update_data = user.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(db_user, key, value)
@@ -77,6 +82,8 @@ def delete_user(db: Session, user_id: int) -> bool:
     db_user = get_user_by_id(db, user_id)
     if not db_user:
         return False
+    if db_user.id == 1:
+        raise ValueError("Cannot delete initial administrator account")
     db.delete(db_user)
     db.commit()
     return True

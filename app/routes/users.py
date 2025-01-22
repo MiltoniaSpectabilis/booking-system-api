@@ -82,7 +82,7 @@ def get_all_users(current_user):
 
 @users_bp.route("/<int:user_id>", methods=["PUT"])
 @admin_required
-def update_existing_user(user_id: int):
+def update_existing_user(current_user, user_id: int):
     """
     Updates an existing user (admin only).
     """
@@ -97,17 +97,29 @@ def update_existing_user(user_id: int):
     except ValidationError as e:
         return jsonify(e.errors()), 400
 
+    try:
+        updated_user = update_user(db, user_id, user_data)
+    except ValueError as e:
+        if "initial administrator" in str(e):
+            return jsonify({"message": str(e)}), 403
+        return jsonify({"message": str(e)}), 400
+
     updated_user = update_user(db, user_id, user_data)
     return jsonify(UserInDB.model_validate(updated_user).model_dump())
 
 
 @users_bp.route("/<int:user_id>", methods=["DELETE"])
 @admin_required
-def delete_existing_user(user_id: int):
+def delete_existing_user(current_user, user_id: int):
     """
     Deletes a user (admin only).
     """
     db: Session = next(get_db())
-    if delete_user(db, user_id):
-        return "", 204
-    return jsonify({"message": "User not found"}), 404
+    try:
+        if delete_user(db, user_id):
+            return "", 204
+        return jsonify({"message": "User not found"}), 404
+    except ValueError as e:
+        if "initial administrator" in str(e):
+            return jsonify({"message": str(e)}), 403
+        return jsonify({"message": str(e)}), 400

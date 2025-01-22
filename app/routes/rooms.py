@@ -87,7 +87,7 @@ def get_all_rooms():
 
 @rooms_bp.route("/<int:room_id>", methods=["PUT"])
 @admin_required
-def update_existing_room(room_id: int):
+def update_existing_room(current_user, room_id: int):
     """
     Updates an existing meeting room.
     """
