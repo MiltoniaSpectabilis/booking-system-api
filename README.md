@@ -84,272 +84,346 @@ Authorization: Bearer <access_token>
 
 ### **Authentication Endpoints**
 
-#### **Register a New User**
-- **URL**: `/auth/register`
-- **Method**: `POST`
-- **Description**: Register a new user.
-- **Request Body**:
-  ```json
-  {
+### Register User
+Creates a new user account in the system.
+
+**Endpoint:** `POST /api/auth/register`
+
+**Request Body:**
+```json
+{
     "username": "string (3-50 chars)",
     "password": "string (min 6 chars)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
+}
+```
+
+**Response:** `201 Created`
+```json
+{
     "id": "integer",
     "username": "string",
     "is_admin": "boolean"
-  }
-  ```
+}
+```
 
-#### **Login**
-- **URL**: `/auth/login`
-- **Method**: `POST`
-- **Description**: Log in and receive an access token.
-- **Request Body**:
-  ```json
-  {
+### Login
+Authenticates a user and provides an access token.
+
+**Endpoint:** `POST /api/auth/login`
+
+**Request Body:**
+```json
+{
     "username": "string (3-50 chars)",
     "password": "string (min 6 chars)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "access_token": "string (JWT token)"
-  }
-  ```
+}
+```
 
----
+**Response:** `200 OK`
+```json
+{
+    "access_token": "string (JWT)"
+}
+```
 
-### **Bookings Endpoints**
+## Bookings
 
-#### **Create a New Booking**
-- **URL**: `/bookings/`
-- **Method**: `POST`
-- **Description**: Create a new booking. Non-admin users can only create bookings for themselves.
-- **Request Body**:
-  ```json
-  {
+### Create Booking
+Creates a new room booking.
+
+**Endpoint:** `POST /api/bookings/`
+
+**Request Body:**
+```json
+{
     "user_id": "integer",
     "room_id": "integer",
     "start_time": "string (ISO 8601 datetime)",
     "end_time": "string (ISO 8601 datetime)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
+}
+```
+
+**Response:** `201 Created`
+```json
+{
     "id": "integer",
     "user_id": "integer",
     "room_id": "integer",
     "start_time": "string (ISO 8601 datetime)",
     "end_time": "string (ISO 8601 datetime)"
-  }
-  ```
+}
+```
 
-#### **Retrieve a Booking by ID**
-- **URL**: `/bookings/<int:booking_id>`
-- **Method**: `GET`
-- **Description**: Retrieve a booking by its ID. Non-admin users can only retrieve their own bookings.
-- **Response**:
-  ```json
-  {
+### Get Booking by ID
+Retrieves details of a specific booking.
+
+**Endpoint:** `GET /api/bookings/{id}`
+
+**Response:** `200 OK`
+```json
+{
     "id": "integer",
     "user_id": "integer",
     "room_id": "integer",
     "start_time": "string (ISO 8601 datetime)",
     "end_time": "string (ISO 8601 datetime)"
-  }
-  ```
+}
+```
 
-#### **Retrieve All Bookings for a User**
-- **URL**: `/bookings/user/<int:user_id>`
-- **Method**: `GET`
-- **Description**: Retrieve all bookings for a specific user. Non-admin users can only retrieve their own bookings.
-- **Response**:
-  ```json
-  [
+### Get User Bookings
+Retrieves all bookings for a specific user.
+
+**Endpoint:** `GET /api/bookings/user/{user_id}`
+
+**Response:** `200 OK`
+```json
+[
     {
-      "id": "integer",
-      "user_id": "integer",
-      "room_id": "integer",
-      "start_time": "string (ISO 8601 datetime)",
-      "end_time": "string (ISO 8601 datetime)"
+        "id": "integer",
+        "user_id": "integer",
+        "room_id": "integer",
+        "start_time": "string (ISO 8601 datetime)",
+        "end_time": "string (ISO 8601 datetime)"
     }
-  ]
-  ```
+]
+```
 
-#### **Retrieve All Bookings for a Room (Admin Only)**
-- **URL**: `/bookings/room/<int:room_id>`
-- **Method**: `GET`
-- **Description**: Retrieve all bookings for a specific room. Only accessible by admins.
-- **Response**:
-  ```json
-  [
+### Get Room Bookings (Admin Only)
+Retrieves all bookings for a specific room.
+
+**Endpoint:** `GET /api/bookings/room/{room_id}`
+
+**Response:** `200 OK`
+```json
+[
     {
-      "id": "integer",
-      "user_id": "integer",
-      "room_id": "integer",
-      "start_time": "string (ISO 8601 datetime)",
-      "end_time": "string (ISO 8601 datetime)"
+        "id": "integer",
+        "user_id": "integer",
+        "room_id": "integer",
+        "start_time": "string (ISO 8601 datetime)",
+        "end_time": "string (ISO 8601 datetime)"
     }
-  ]
-  ```
+]
+```
 
-#### **Retrieve All Bookings (Admin Only)**
-- **URL**: `/bookings/`
-- **Method**: `GET`
-- **Description**: Retrieve all bookings. Only accessible by admins.
-- **Response**:
-  ```json
-  [
-    {
-      "id": "integer",
-      "user_id": "integer",
-      "room_id": "integer",
-      "start_time": "string (ISO 8601 datetime)",
-      "end_time": "string (ISO 8601 datetime)"
-    }
-  ]
-  ```
+### Update Booking
+Updates an existing booking's time slots.
 
-#### **Update a Booking**
-- **URL**: `/bookings/<int:booking_id>`
-- **Method**: `PUT`
-- **Description**: Update an existing booking. Non-admin users can only update their own bookings.
-- **Request Body**:
-  ```json
-  {
+**Endpoint:** `PUT /api/bookings/{id}`
+
+**Request Body:**
+```json
+{
     "start_time": "string (ISO 8601 datetime, optional)",
     "end_time": "string (ISO 8601 datetime, optional)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
+}
+```
+
+**Response:** `200 OK`
+```json
+{
     "id": "integer",
     "user_id": "integer",
     "room_id": "integer",
     "start_time": "string (ISO 8601 datetime)",
     "end_time": "string (ISO 8601 datetime)"
-  }
-  ```
+}
+```
 
-#### **Delete a Booking**
-- **URL**: `/bookings/<int:booking_id>`
-- **Method**: `DELETE`
-- **Description**: Delete a booking. Non-admin users can only delete their own bookings.
-- **Response**:
-  ```json
-  {
-    "message": "string"
-  }
-  ```
+### Delete Booking
+Removes a booking from the system.
 
----
+**Endpoint:** `DELETE /api/bookings/{id}`
 
-### **Users Endpoints (Admin Only)**
+**Response:** `204 No Content`
 
-#### **Create a New User**
-- **URL**: `/users/`
-- **Method**: `POST`
-- **Description**: Create a new user. Only accessible by admins.
-- **Request Body**:
-  ```json
-  {
+## Users (Admin Only)
+
+### Create User
+Creates a new user account (admin access required).
+
+**Endpoint:** `POST /api/users/`
+
+**Request Body:**
+```json
+{
     "username": "string (3-50 chars)",
     "password": "string (min 6 chars)",
-    "is_admin": "boolean (optional, default=false)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
+    "is_admin": "boolean (optional)"
+}
+```
+
+**Response:** `201 Created`
+```json
+{
     "id": "integer",
     "username": "string",
     "is_admin": "boolean"
-  }
-  ```
+}
+```
 
-#### **Retrieve a User by ID**
-- **URL**: `/users/<int:user_id>`
-- **Method**: `GET`
-- **Description**: Retrieve a user by their ID. Only accessible by admins.
-- **Response**:
-  ```json
-  {
+### Get User by ID
+Retrieves user details by ID.
+
+**Endpoint:** `GET /api/users/{id}`
+
+**Response:** `200 OK`
+```json
+{
     "id": "integer",
     "username": "string",
     "is_admin": "boolean"
-  }
-  ```
+}
+```
 
-#### **Retrieve All Users**
-- **URL**: `/users/`
-- **Method**: `GET`
-- **Description**: Retrieve all users. Only accessible by admins.
-- **Response**:
-  ```json
-  [
+### Get All Users
+Retrieves a list of all users.
+
+**Endpoint:** `GET /api/users/`
+
+**Response:** `200 OK`
+```json
+[
     {
-      "id": "integer",
-      "username": "string",
-      "is_admin": "boolean"
+        "id": "integer",
+        "username": "string",
+        "is_admin": "boolean"
     }
-  ]
-  ```
+]
+```
 
----
+### Update User
+Updates user information.
 
-### **Meeting Rooms Endpoints (Admin Only)**
+**Endpoint:** `PUT /api/users/{id}`
 
-#### **Create a New Meeting Room**
-- **URL**: `/rooms/`
-- **Method**: `POST`
-- **Description**: Create a new meeting room. Only accessible by admins.
-- **Request Body**:
-  ```json
-  {
+**Request Body:**
+```json
+{
+    "username": "string (3-50 chars, optional)",
+    "is_admin": "boolean (optional)"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+    "id": "integer",
+    "username": "string",
+    "is_admin": "boolean"
+}
+```
+
+### Delete User
+Removes a user from the system.
+
+**Endpoint:** `DELETE /api/users/{id}`
+
+**Response:** `204 No Content`
+
+## Meeting Rooms (Admin Only)
+
+### Create Room
+Creates a new meeting room.
+
+**Endpoint:** `POST /api/rooms/`
+
+**Request Body:**
+```json
+{
     "name": "string (3-100 chars)",
-    "capacity": "integer (> 0)",
+    "capacity": "integer (>0)",
     "description": "string (optional)"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "id": "integer",
-    "name": "string",
-    "capacity": "integer",
-    "description": "string"
-  }
-  ```
+}
+```
 
-#### **Retrieve a Meeting Room by ID**
-- **URL**: `/rooms/<int:room_id>`
-- **Method**: `GET`
-- **Description**: Retrieve a meeting room by its ID. Only accessible by admins.
-- **Response**:
-  ```json
-  {
+**Response:** `201 Created`
+```json
+{
     "id": "integer",
     "name": "string",
     "capacity": "integer",
     "description": "string"
-  }
-  ```
+}
+```
+
+### Get Room by ID
+Retrieves room details by ID.
+
+**Endpoint:** `GET /api/rooms/{id}`
+
+**Response:** `200 OK`
+```json
+{
+    "id": "integer",
+    "name": "string",
+    "capacity": "integer",
+    "description": "string"
+}
+```
+
+### Get All Rooms
+Retrieves a list of all meeting rooms.
+
+**Endpoint:** `GET /api/rooms/`
+
+**Response:** `200 OK`
+```json
+[
+    {
+        "id": "integer",
+        "name": "string",
+        "capacity": "integer",
+        "description": "string"
+    }
+]
+```
+
+### Update Room
+Updates room information.
+
+**Endpoint:** `PUT /api/rooms/{id}`
+
+**Request Body:**
+```json
+{
+    "name": "string (3-100 chars, optional)",
+    "capacity": "integer (>0, optional)",
+    "description": "string (optional)"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+    "id": "integer",
+    "name": "string",
+    "capacity": "integer",
+    "description": "string"
+}
+```
+
+### Delete Room
+Removes a room from the system.
+
+**Endpoint:** `DELETE /api/rooms/{id}`
+
+**Response:** `204 No Content`
+
+## Status Codes
+
+The API uses standard HTTP response codes to indicate the success or failure of requests:
+
+| Code | Status | Description |
+|------|---------|------------|
+| 200 | OK | Successful GET/PUT operations |
+| 201 | Created | Successful resource creation |
+| 204 | No Content | Successful deletions |
+| 400 | Bad Request | Invalid request parameters/body |
+| 401 | Unauthorized | Missing/invalid authentication |
+| 403 | Forbidden | Insufficient permissions |
+| 404 | Not Found | Resource doesn't exist |
+| 409 | Conflict | Booking conflict or duplicate data |
+| 500 | Server Error | Internal server issues |
 
 ---
-
-## **Error Handling**
-
-The API uses standard HTTP status codes to indicate the success or failure of requests:
-
-- **400 Bad Request**: Invalid input data
-- **401 Unauthorized**: Missing or invalid token
-- **403 Forbidden**: Insufficient permissions
-- **404 Not Found**: Resource not found
-- **409 Conflict**: Resource already exists or scheduling conflict
