@@ -459,3 +459,52 @@ The API uses standard HTTP response codes to indicate the success or failure of 
 | 404 | Not Found | Resource doesn't exist |
 | 409 | Conflict | Booking conflict or duplicate data |
 | 500 | Server Error | Internal server issues |
+
+---
+
+## Examples
+
+Here are some brief examples to help you get started with the API. **Remember:** The first user to register automatically becomes an admin. Subsequent users are non-admin by default unless granted admin rights by an existing admin.
+
+### 1. Register the First User (Automatically an Admin)
+```bash
+curl -X POST http://127.0.0.1:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin_user", "password": "securepassword"}'
+```
+
+### 2. Log in and Get an Access Token
+```bash
+curl -X POST http://127.0.0.1:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin_user", "password": "securepassword"}'
+```
+
+### 3. Create a Booking (Authenticated)
+```bash
+curl -X POST http://127.0.0.1:5000/api/bookings/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <access_token>" \
+  -d '{"user_id": 1, "room_id": 1, "start_time": "2025-01-25T09:00:00", "end_time": "2025-01-25T10:00:00"}'
+```
+
+### 4. Get All Rooms (Admin Only)
+```bash
+curl -X GET http://127.0.0.1:5000/api/rooms/ \
+  -H "Authorization: Bearer <access_token>"
+```
+
+### 5. Create a Non-Admin User (Admin Only)
+```bash
+curl -X POST http://127.0.0.1:5000/api/users/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <access_token>" \
+  -d '{"username": "regular_user", "password": "anotherpassword"}'
+```
+
+### 6. Update a User to Admin (Admin Only)
+```bash
+curl -X PUT http://127.0.0.1:5000/api/users/2 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <access_token>" \
+  -d '{"is_admin": true}'
