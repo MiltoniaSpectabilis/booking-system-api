@@ -3,7 +3,7 @@
 This API provides functionality for managing users, meeting rooms, and bookings.
 It supports role-based access control,
 where non-admin users can only access their own data, and admins have full access.
-The API also supports **pagination** for endpoints that return lists of resources.
+The API also supports **pagination**.
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
@@ -511,7 +511,7 @@ curl -X PUT http://127.0.0.1:5000/api/users/2 \
 
 ## Pagination
 
-The API supports pagination for endpoints that return lists of resources (e.g., bookings, users, rooms).
+The API supports pagination for endpoints.
 Use the `skip` and `limit` query parameters to control the pagination:
 
 - `skip`: Number of items to skip (default: `0`)
