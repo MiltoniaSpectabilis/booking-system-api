@@ -82,8 +82,8 @@ Authorization: Bearer <access_token>
 
 ### Authentication Endpoints
 
-### Register User
-**Description:** Creates a new user account in the system.
+#### **Register User**
+**Description:** *Creates a new user account in the system.*
 
 **Endpoint:** `POST /api/auth/register`
 
@@ -106,8 +106,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Login
-**Description:** Authenticates a user and provides an access token.
+#### **Login**
+**Description:** *Authenticates a user and provides an access token.*
 
 **Endpoint:** `POST /api/auth/login`
 
@@ -130,8 +130,8 @@ Authorization: Bearer <access_token>
 
 ### Bookings Endpoints
 
-### Create Booking
-**Description:** Creates a new room booking.
+#### **Create Booking**
+**Description:** *Creates a new room booking.*
 
 **Endpoint:** `POST /api/bookings/`
 
@@ -158,8 +158,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get Booking by ID
-**Description:** Retrieves details of a specific booking.
+#### **Get Booking by ID**
+**Description:** *Retrieves details of a specific booking.*
 
 **Endpoint:** `GET /api/bookings/{id}`
 
@@ -176,8 +176,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get User Bookings
-**Description:** Retrieves all bookings for a specific user.
+#### **Get User Bookings**
+**Description:** *Retrieves all bookings for a specific user.*
 
 **Endpoint:** `GET /api/bookings/user/{user_id}`
 
@@ -196,8 +196,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get Room Bookings (Admin Only)
-**Description:** Retrieves all bookings for a specific room.
+#### **Get Room Bookings (Admin Only)**
+**Description:** *Retrieves all bookings for a specific room.*
 
 **Endpoint:** `GET /api/bookings/room/{room_id}`
 
@@ -216,8 +216,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Update Booking
-**Description:** Updates an existing booking's time slots.
+#### **Update Booking**
+**Description:** *Updates an existing booking's time slots.*
 
 **Endpoint:** `PUT /api/bookings/{id}`
 
@@ -242,8 +242,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Delete Booking
-**Description:** Removes a booking from the system.
+#### **Delete Booking**
+**Description:** *Removes a booking from the system.*
 
 **Endpoint:** `DELETE /api/bookings/{id}`
 
@@ -253,8 +253,8 @@ Authorization: Bearer <access_token>
 
 ### Users Endpoints (Admin Only)
 
-### Create User
-**Description:** Creates a new user account (admin access required).
+#### **Create User**
+**Description:** *Creates a new user account (admin access required).*
 
 **Endpoint:** `POST /api/users/`
 
@@ -278,8 +278,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get User by ID
-**Description:** Retrieves user details by ID.
+#### **Get User by ID**
+**Description:** *Retrieves user details by ID.*
 
 **Endpoint:** `GET /api/users/{id}`
 
@@ -294,8 +294,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get All Users
-**Description:** Retrieves a list of all users.
+#### **Get All Users**
+**Description:** *Retrieves a list of all users.*
 
 **Endpoint:** `GET /api/users/`
 
@@ -312,8 +312,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Update User
-**Description:** Updates user information.
+#### **Update User**
+**Description:** *Updates user information.*
 
 **Endpoint:** `PUT /api/users/{id}`
 
@@ -336,8 +336,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Delete User
-**Description:** Removes a user from the system.
+#### **Delete User**
+**Description:** *Removes a user from the system.*
 
 **Endpoint:** `DELETE /api/users/{id}`
 
@@ -347,8 +347,8 @@ Authorization: Bearer <access_token>
 
 ### Meeting Rooms Endpoints (Admin Only)
 
-### Create Room
-**Description:** Creates a new meeting room.
+#### **Create Room**
+**Description:** *Creates a new meeting room.*
 
 **Endpoint:** `POST /api/rooms/`
 
@@ -373,8 +373,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get Room by ID
-**Description:** Retrieves room details by ID.
+#### **Get Room by ID**
+**Description:** *Retrieves room details by ID.*
 
 **Endpoint:** `GET /api/rooms/{id}`
 
@@ -390,8 +390,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Get All Rooms
-**Description:** Retrieves a list of all meeting rooms.
+#### **Get All Rooms**
+**Description:** *Retrieves a list of all meeting rooms.*
 
 **Endpoint:** `GET /api/rooms/`
 
@@ -409,8 +409,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Update Room
-**Description:** Updates room information.
+#### **Update Room**
+**Description:** *Updates room information.*
 
 **Endpoint:** `PUT /api/rooms/{id}`
 
@@ -435,8 +435,8 @@ Authorization: Bearer <access_token>
 
 ---
 
-### Delete Room
-**Description:** Removes a room from the system.
+#### **Delete Room**
+**Description:** *Removes a room from the system.*
 
 **Endpoint:** `DELETE /api/rooms/{id}`
 
@@ -448,14 +448,14 @@ Authorization: Bearer <access_token>
 
 The API uses standard HTTP response codes to indicate the success or failure of requests:
 
-| Code | Status           | Description                              |
-|------|------------------|------------------------------------------|
-| 200  | OK               | Successful GET/PUT operations            |
-| 201  | Created          | Successful resource creation             |
-| 204  | No Content       | Successful deletions                     |
-| 400  | Bad Request      | Invalid request parameters/body          |
-| 401  | Unauthorized     | Missing/invalid authentication           |
-| 403  | Forbidden        | Insufficient permissions                 |
-| 404  | Not Found        | Resource doesn't exist                   |
-| 409  | Conflict         | Booking conflict or duplicate data       |
-| 500  | Server Error     | Internal server issues                   |
+| Code | Status | Description |
+|------|---------|------------|
+| 200 | OK | Successful GET/PUT operations |
+| 201 | Created | Successful resource creation |
+| 204 | No Content | Successful deletions |
+| 400 | Bad Request | Invalid request parameters/body |
+| 401 | Unauthorized | Missing/invalid authentication |
+| 403 | Forbidden | Insufficient permissions |
+| 404 | Not Found | Resource doesn't exist |
+| 409 | Conflict | Booking conflict or duplicate data |
+| 500 | Server Error | Internal server issues |
