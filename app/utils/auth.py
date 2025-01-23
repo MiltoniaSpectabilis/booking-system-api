@@ -111,7 +111,8 @@ def admin_required(f):
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
             return f(current_user, *args, **kwargs)
-        except Exception:
-            return jsonify({"message": "Invalid token!"}), 401
-        return f(*args, **kwargs)
+        except Exception as e:
+            if "token" in str(e).lower():
+                return jsonify({"message": "Invalid token!"}), 401
+            return jsonify({"message": str(e)}), 400
     return decorated_function
