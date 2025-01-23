@@ -1,6 +1,9 @@
 # Meeting Room Booking System API Documentation
 
-This API provides functionality for managing users, meeting rooms, and bookings. It supports role-based access control, where non-admin users can only access their own data, and admins have full access.
+This API provides functionality for managing users, meeting rooms, and bookings.
+It supports role-based access control,
+where non-admin users can only access their own data, and admins have full access.
+The API also supports **pagination** for endpoints that return lists of resources.
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
@@ -13,7 +16,9 @@ This API provides functionality for managing users, meeting rooms, and bookings.
    - [Bookings](#bookings-endpoints)
    - [Users](#users-endpoints-admin-only)
    - [Meeting Rooms](#meeting-rooms-endpoints-admin-only)
-4. [Status Codes](#status-codes)
+4. [Pagination](#pagination)
+5. [Examples](#examples)
+5. [Status Codes](#status-codes)
 
 ---
 
@@ -465,6 +470,7 @@ The API uses standard HTTP response codes to indicate the success or failure of 
 ## Examples
 
 Here are some brief examples to help you get started with the API.
+
 **Remember:** The first user to register automatically becomes an admin. Subsequent users are non-admin by default unless granted admin rights by an existing admin.
 
 ### 1. Register the First User (Automatically an Admin)
@@ -517,3 +523,22 @@ curl -X PUT http://127.0.0.1:5000/api/users/2 \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <access_token>" \
   -d '{"is_admin": true}'
+```
+
+---
+
+## Pagination
+
+The API supports pagination for endpoints that return lists of resources (e.g., bookings, users, rooms).
+Use the `skip` and `limit` query parameters to control the pagination:
+
+- `skip`: Number of items to skip (default: `0`)
+- `limit`: Maximum number of items to return (default: `100`)
+
+### Example: Paginated Request
+```bash
+curl -X GET "http://127.0.0.1:5000/api/bookings/?skip=10&limit=5" \
+  -H "Authorization: Bearer <access_token>"
+```
+
+This request skips the first 10 bookings and returns the next 5.
