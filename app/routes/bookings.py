@@ -31,9 +31,7 @@ def create_new_booking(current_user):
         booking_data = BookingCreate(**request.json)
         if not current_user.is_admin and\
                 booking_data.user_id != current_user.id:
-            return jsonify(
-                {"message": "Unauthorized to create booking for other users"}
-            ), 403
+            raise ValueError("Unauthorized to create booking for other users")
         booking = create_booking(db, booking_data)
         return jsonify(BookingInDB.model_validate(booking).model_dump()), 201
     except ValueError as e:
@@ -98,13 +96,10 @@ def get_all_bookings(current_user):
     Retrieves all bookings (admin only).
     """
     db: Session = next(get_db())
-    try:
-        skip = int(request.args.get("skip", 0))
-        limit = int(request.args.get("limit", 100))
-        if skip < 0 or limit < 1:
-            raise ValueError("skip must be >= 0 and limit must be >= 1")
-    except ValueError as e:
-        return jsonify({"message": str(e)}), 400
+    skip = int(request.args.get("skip", 0))
+    limit = int(request.args.get("limit", 100))
+    if skip < 0 or limit < 0:
+        raise ValueError("skip and limit must be >= 0")
     bookings = get_bookings(db, skip, limit)
     return jsonify(
         [BookingInDB.model_validate(booking).model_dump()

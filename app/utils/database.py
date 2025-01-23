@@ -40,3 +40,5 @@ def get_db():
 def init_db():
     """Create all tables in the database."""
     Base.metadata.create_all(bind=engine)
+    with engine.connect() as connection:
+        connection.execute(text("ALTER TABLE users AUTO_INCREMENT = 1;"))

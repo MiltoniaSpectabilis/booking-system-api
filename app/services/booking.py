@@ -8,7 +8,7 @@ from app.schemas.booking import BookingCreate, BookingUpdate
 from app.services.user import get_user_by_id
 from app.services.meeting_room import get_room_by_id
 from sqlalchemy import and_, or_
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def get_booking_by_id(db: Session, booking_id: int) -> Booking | None:
@@ -65,6 +65,10 @@ def create_booking(db: Session, booking: BookingCreate) -> Booking:
         raise ValueError(f"User with id {booking.user_id} does not exist")
     if get_room_by_id(db, booking.room_id) is None:
         raise ValueError(f"Room with id {booking.room_id} does not exist")
+    if booking.start_time.tzinfo is None:
+        booking.start_time = booking.start_time.replace(tzinfo=timezone.utc)
+    if booking.start_time < datetime.now(timezone.utc):
+        raise ValueError("Cannot create a booking in the past")
     if not is_room_available(
         db, booking.room_id, booking.start_time, booking.end_time
     ):

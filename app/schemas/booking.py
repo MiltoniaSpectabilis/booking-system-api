@@ -16,7 +16,9 @@ class BookingBase(BaseModel):
 
     @validator("end_time")
     def validate_end_time(cls, value, values):
-        """Validator to ensure end_time is after start_time."""
+        """
+        Validator to ensure end_time is after start_time.
+        """
         if "start_time" in values and value <= values["start_time"]:
             raise ValueError("end_time must be greater than start_time")
         return value
@@ -36,6 +38,17 @@ class BookingUpdate(BookingBase):
     """
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
+
+    @validator("end_time")
+    def validate_end_time(cls, value, values):
+        """
+        Validator to ensure end_time is after
+        start_time if both are provided.
+        """
+        if "start_time" in values and values["start_time"] is not None and\
+                value is not None and value <= values["start_time"]:
+            raise ValueError("end_time must be greater than start_time")
+        return value
 
 
 class BookingInDB(BookingBase):

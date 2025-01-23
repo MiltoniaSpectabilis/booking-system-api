@@ -33,15 +33,14 @@ def create_new_room(current_user):
     db: Session = next(get_db())
     try:
         room_data = MeetingRoomCreate(**request.json)
+        room = create_room(db, room_data)
+        return jsonify(MeetingRoomInDB.model_validate(room).model_dump()), 201
     except ValidationError as e:
         return jsonify(e.errors()), 400
-    try:
-        room = create_room(db, room_data)
     except ValueError as e:
-        if "already exists" in str(e):
+        if "Room name already exists" in str(e):
             return jsonify({"message": str(e)}), 409
         return jsonify({"message": str(e)}), 400
-    return jsonify(MeetingRoomInDB.model_validate(room).model_dump()), 201
 
 
 @rooms_bp.route("/<int:room_id>", methods=["GET"])

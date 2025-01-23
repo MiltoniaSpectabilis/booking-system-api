@@ -94,18 +94,19 @@ def update_existing_user(current_user, user_id: int):
     update_data = request.get_json()
     try:
         user_data = UserUpdate(**update_data)
+        if user.id == 1 and user_data.is_admin is False:
+            raise ValueError(
+                "Cannot revoke admin status from initial administrator"
+            )
+        updated_user = update_user(db, user_id, user_data)
+        return jsonify(UserInDB.model_validate(updated_user).model_dump())
+
     except ValidationError as e:
         return jsonify(e.errors()), 400
-
-    try:
-        updated_user = update_user(db, user_id, user_data)
     except ValueError as e:
-        if "initial administrator" in str(e):
-            return jsonify({"message": str(e)}), 403
         return jsonify({"message": str(e)}), 400
 
     updated_user = update_user(db, user_id, user_data)
-    return jsonify(UserInDB.model_validate(updated_user).model_dump())
 
 
 @users_bp.route("/<int:user_id>", methods=["DELETE"])

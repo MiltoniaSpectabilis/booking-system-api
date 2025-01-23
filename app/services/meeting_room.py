@@ -60,6 +60,10 @@ def update_room(
     if not db_room:
         return None
     update_data = room.model_dump(exclude_unset=True)
+    if "name" in update_data and db_room.name != update_data["name"]:
+        existing_room = get_room_by_name(db, update_data["name"])
+        if existing_room:
+            raise ValueError("Room name already exists")
     for key, value in update_data.items():
         setattr(db_room, key, value)
     db.commit()
@@ -74,6 +78,8 @@ def delete_room(db: Session, room_id: int) -> bool:
     db_room = get_room_by_id(db, room_id)
     if not db_room:
         return False
+    if db_room.bookings:
+        raise ValueError("Cannot delete room with existing bookings.")
     db.delete(db_room)
     db.commit()
     return True

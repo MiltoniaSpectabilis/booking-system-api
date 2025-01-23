@@ -67,9 +67,16 @@ def update_user(db: Session, user_id: int, user: UserUpdate) -> User | None:
     for key, value in update_data.items():
         setattr(db_user, key, value)
 
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except IntegrityError as e:
+        db.rollback()
+        if "ix_users_username" in str(e):
+            raise ValueError("Username already exists.") from e
+        else:
+            raise
 
 
 def delete_user(db: Session, user_id: int) -> bool:

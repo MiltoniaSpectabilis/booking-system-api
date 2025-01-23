@@ -53,7 +53,7 @@ def get_current_user(token: str):
     username = verify_token(token, credentials_exception)
     user = get_user_by_username(db, username)
     if user is None:
-        raise credentials_exception
+        return None
     return user
 
 
@@ -87,12 +87,14 @@ def user_required(f):
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
+            if current_user is None:
+                raise Exception("Invalid token")
             user_id = kwargs.get('user_id')
             if current_user.id != int(user_id):
                 return jsonify({"message": "Access denied!"}), 403
+            return f(current_user, *args, **kwargs)
         except Exception:
             return jsonify({"message": "Invalid token!"}), 401
-        return f(current_user, *args, **kwargs)
     return decorated_function
 
 
@@ -108,6 +110,8 @@ def admin_required(f):
         try:
             token = token.split(" ")[1]
             current_user = get_current_user(token)
+            if current_user is None:
+                raise Exception("Invalid token")
             if not current_user.is_admin:
                 return jsonify({"message": "Admin access required!"}), 403
             return f(current_user, *args, **kwargs)
