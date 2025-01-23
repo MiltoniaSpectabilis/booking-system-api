@@ -18,7 +18,7 @@ The API also supports **pagination** for endpoints that return lists of resource
    - [Meeting Rooms](#meeting-rooms-endpoints-admin-only)
 4. [Pagination](#pagination)
 5. [Examples](#examples)
-5. [Status Codes](#status-codes)
+6. [Status Codes](#status-codes)
 
 ---
 
@@ -449,24 +449,6 @@ Authorization: Bearer <access_token>
 
 ---
 
-## Status Codes
-
-The API uses standard HTTP response codes to indicate the success or failure of requests:
-
-| Code | Status | Description |
-|------|---------|------------|
-| 200 | OK | Successful GET/PUT operations |
-| 201 | Created | Successful resource creation |
-| 204 | No Content | Successful deletions |
-| 400 | Bad Request | Invalid request parameters/body |
-| 401 | Unauthorized | Missing/invalid authentication |
-| 403 | Forbidden | Insufficient permissions |
-| 404 | Not Found | Resource doesn't exist |
-| 409 | Conflict | Booking conflict or duplicate data |
-| 500 | Server Error | Internal server issues |
-
----
-
 ## Examples
 
 Here are some brief examples to help you get started with the API.
@@ -542,3 +524,21 @@ curl -X GET "http://127.0.0.1:5000/api/bookings/?skip=10&limit=5" \
 ```
 
 This request skips the first 10 bookings and returns the next 5.
+
+---
+
+## Status Codes
+
+The API uses standard HTTP response codes to indicate the success or failure of requests:
+
+| Code  | Status         | Description                          |
+|-------|----------------|--------------------------------------|
+| 200   | OK             | Successful GET/PUT operations        |
+| 201   | Created        | Successful resource creation         |
+| 204   | No Content     | Successful deletions                 |
+| 400   | Bad Request    | Invalid request parameters/body      |
+| 401   | Unauthorized   | Missing/invalid authentication       |
+| 403   | Forbidden      | Insufficient permissions             |
+| 404   | Not Found      | Resource doesn't exist               |
+| 409   | Conflict       | Booking conflict or duplicate data   |
+| 500   | Server Error   | Internal server issues               |
