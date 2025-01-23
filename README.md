@@ -82,7 +82,7 @@ Authorization: Bearer <access_token>
 
 ### Authentication Endpoints
 
-#### Register User
+### Register User
 **Description:** Creates a new user account in the system.
 
 **Endpoint:** `POST /api/auth/register`
@@ -106,7 +106,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Login
+### Login
 **Description:** Authenticates a user and provides an access token.
 
 **Endpoint:** `POST /api/auth/login`
@@ -130,7 +130,7 @@ Authorization: Bearer <access_token>
 
 ### Bookings Endpoints
 
-#### Create Booking
+### Create Booking
 **Description:** Creates a new room booking.
 
 **Endpoint:** `POST /api/bookings/`
@@ -158,7 +158,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get Booking by ID
+### Get Booking by ID
 **Description:** Retrieves details of a specific booking.
 
 **Endpoint:** `GET /api/bookings/{id}`
@@ -176,7 +176,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get User Bookings
+### Get User Bookings
 **Description:** Retrieves all bookings for a specific user.
 
 **Endpoint:** `GET /api/bookings/user/{user_id}`
@@ -196,7 +196,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get Room Bookings (Admin Only)
+### Get Room Bookings (Admin Only)
 **Description:** Retrieves all bookings for a specific room.
 
 **Endpoint:** `GET /api/bookings/room/{room_id}`
@@ -216,7 +216,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Update Booking
+### Update Booking
 **Description:** Updates an existing booking's time slots.
 
 **Endpoint:** `PUT /api/bookings/{id}`
@@ -242,7 +242,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Delete Booking
+### Delete Booking
 **Description:** Removes a booking from the system.
 
 **Endpoint:** `DELETE /api/bookings/{id}`
@@ -253,7 +253,7 @@ Authorization: Bearer <access_token>
 
 ### Users Endpoints (Admin Only)
 
-#### Create User
+### Create User
 **Description:** Creates a new user account (admin access required).
 
 **Endpoint:** `POST /api/users/`
@@ -278,7 +278,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get User by ID
+### Get User by ID
 **Description:** Retrieves user details by ID.
 
 **Endpoint:** `GET /api/users/{id}`
@@ -294,7 +294,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get All Users
+### Get All Users
 **Description:** Retrieves a list of all users.
 
 **Endpoint:** `GET /api/users/`
@@ -312,7 +312,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Update User
+### Update User
 **Description:** Updates user information.
 
 **Endpoint:** `PUT /api/users/{id}`
@@ -336,7 +336,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Delete User
+### Delete User
 **Description:** Removes a user from the system.
 
 **Endpoint:** `DELETE /api/users/{id}`
@@ -347,7 +347,7 @@ Authorization: Bearer <access_token>
 
 ### Meeting Rooms Endpoints (Admin Only)
 
-#### Create Room
+### Create Room
 **Description:** Creates a new meeting room.
 
 **Endpoint:** `POST /api/rooms/`
@@ -373,7 +373,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get Room by ID
+### Get Room by ID
 **Description:** Retrieves room details by ID.
 
 **Endpoint:** `GET /api/rooms/{id}`
@@ -390,7 +390,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Get All Rooms
+### Get All Rooms
 **Description:** Retrieves a list of all meeting rooms.
 
 **Endpoint:** `GET /api/rooms/`
@@ -409,7 +409,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Update Room
+### Update Room
 **Description:** Updates room information.
 
 **Endpoint:** `PUT /api/rooms/{id}`
@@ -435,7 +435,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### Delete Room
+### Delete Room
 **Description:** Removes a room from the system.
 
 **Endpoint:** `DELETE /api/rooms/{id}`
@@ -448,15 +448,14 @@ Authorization: Bearer <access_token>
 
 The API uses standard HTTP response codes to indicate the success or failure of requests:
 
-| Code | Status | Description |
-|------|---------|------------|
-| 200 | OK | Successful GET/PUT operations |
-| 201 | Created | Successful resource creation |
-| 204 | No Content | Successful deletions |
-| 400 | Bad Request | Invalid request parameters/body |
-| 401 | Unauthorized | Missing/invalid authentication |
-| 403 | Forbidden | Insufficient permissions |
-| 404 | Not Found | Resource doesn't exist |
-| 409 | Conflict | Booking conflict or duplicate data |
-| 500 | Server Error | Internal server issues |
-
+| Code | Status           | Description                              |
+|------|------------------|------------------------------------------|
+| 200  | OK               | Successful GET/PUT operations            |
+| 201  | Created          | Successful resource creation             |
+| 204  | No Content       | Successful deletions                     |
+| 400  | Bad Request      | Invalid request parameters/body          |
+| 401  | Unauthorized     | Missing/invalid authentication           |
+| 403  | Forbidden        | Insufficient permissions                 |
+| 404  | Not Found        | Resource doesn't exist                   |
+| 409  | Conflict         | Booking conflict or duplicate data       |
+| 500  | Server Error     | Internal server issues                   |
