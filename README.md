@@ -16,8 +16,8 @@ The API also supports **pagination**.
    - [Bookings](#bookings-endpoints)
    - [Users](#users-endpoints-admin-only)
    - [Meeting Rooms](#meeting-rooms-endpoints-admin-only)
-4. [Pagination](#pagination)
-5. [Examples](#examples)
+4. [Examples](#examples)
+5. [Pagination](#pagination)
 6. [Status Codes](#status-codes)
 
 ---
@@ -511,7 +511,7 @@ curl -X PUT http://127.0.0.1:5000/api/users/2 \
 
 ## Pagination
 
-The API supports pagination for endpoints.
+The API supports pagination.
 Use the `skip` and `limit` query parameters to control the pagination:
 
 - `skip`: Number of items to skip (default: `0`)
