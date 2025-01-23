@@ -98,8 +98,13 @@ def get_all_bookings(current_user):
     Retrieves all bookings (admin only).
     """
     db: Session = next(get_db())
-    skip = int(request.args.get("skip", 0))
-    limit = int(request.args.get("limit", 100))
+    try:
+        skip = int(request.args.get("skip", 0))
+        limit = int(request.args.get("limit", 100))
+        if skip < 0 or limit < 1:
+            raise ValueError("skip must be >= 0 and limit must be >= 1")
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
     bookings = get_bookings(db, skip, limit)
     return jsonify(
         [BookingInDB.model_validate(booking).model_dump()

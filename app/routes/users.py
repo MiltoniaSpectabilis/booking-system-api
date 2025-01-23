@@ -54,7 +54,7 @@ def get_existing_user(current_user, user_id: int):
 
 @users_bp.route("/username/<string:username>", methods=["GET"])
 @admin_required
-def get_existing_user_by_username(username: str):
+def get_existing_user_by_username(current_user, username: str):
     """
     Retrieves a user by username (admin only).
     """

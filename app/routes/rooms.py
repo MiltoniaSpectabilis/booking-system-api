@@ -59,7 +59,7 @@ def get_existing_room(current_user, room_id: int):
 
 @rooms_bp.route("/name/<string:name>", methods=["GET"])
 @admin_required
-def get_existing_room_by_name(name: str):
+def get_existing_room_by_name(current_user, name: str):
     """
     Retrieves a meeting room by name.
     """
@@ -72,7 +72,7 @@ def get_existing_room_by_name(name: str):
 
 @rooms_bp.route("/", methods=["GET"])
 @admin_required
-def get_all_rooms():
+def get_all_rooms(current_user):
     """
     Retrieves all meeting rooms.
     """
@@ -106,7 +106,7 @@ def update_existing_room(current_user, room_id: int):
 
 @rooms_bp.route("/<int:room_id>", methods=["DELETE"])
 @admin_required
-def delete_existing_room(room_id: int):
+def delete_existing_room(current_user, room_id: int):
     """
     Deletes a meeting room.
     """
