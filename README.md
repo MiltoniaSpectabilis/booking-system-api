@@ -13,9 +13,9 @@ The API also supports **pagination**.
 2. [Authentication](#authentication)
 3. [API Endpoints](#api-endpoints)
    - [Authentication](#authentication-endpoints)
-   - [Bookings](#bookings-endpoints)
    - [Users](#users-endpoints-admin-only)
    - [Meeting Rooms](#meeting-rooms-endpoints-admin-only)
+   - [Bookings](#bookings-endpoints)
 4. [Examples](#examples)
 5. [Pagination](#pagination)
 6. [Status Codes](#status-codes)
@@ -130,129 +130,6 @@ Authorization: Bearer <access_token>
     "access_token": "string (JWT)"
 }
 ```
-
----
-
-### Bookings Endpoints
-
-#### **Create Booking**
-**Description:** *Creates a new room booking.*
-
-**Endpoint:** `POST /api/bookings/`
-
-**Request Body:**
-```json
-{
-    "user_id": "integer",
-    "room_id": "integer",
-    "start_time": "string (ISO 8601 datetime)",
-    "end_time": "string (ISO 8601 datetime)"
-}
-```
-
-**Response:** `201 Created`
-```json
-{
-    "id": "integer",
-    "user_id": "integer",
-    "room_id": "integer",
-    "start_time": "string (ISO 8601 datetime)",
-    "end_time": "string (ISO 8601 datetime)"
-}
-```
-
----
-
-#### **Get Booking by ID**
-**Description:** *Retrieves details of a specific booking.*
-
-**Endpoint:** `GET /api/bookings/{id}`
-
-**Response:** `200 OK`
-```json
-{
-    "id": "integer",
-    "user_id": "integer",
-    "room_id": "integer",
-    "start_time": "string (ISO 8601 datetime)",
-    "end_time": "string (ISO 8601 datetime)"
-}
-```
-
----
-
-#### **Get User Bookings**
-**Description:** *Retrieves all bookings for a specific user.*
-
-**Endpoint:** `GET /api/bookings/user/{user_id}`
-
-**Response:** `200 OK`
-```json
-[
-    {
-        "id": "integer",
-        "user_id": "integer",
-        "room_id": "integer",
-        "start_time": "string (ISO 8601 datetime)",
-        "end_time": "string (ISO 8601 datetime)"
-    }
-]
-```
-
----
-
-#### **Get Room Bookings (Admin Only)**
-**Description:** *Retrieves all bookings for a specific room.*
-
-**Endpoint:** `GET /api/bookings/room/{room_id}`
-
-**Response:** `200 OK`
-```json
-[
-    {
-        "id": "integer",
-        "user_id": "integer",
-        "room_id": "integer",
-        "start_time": "string (ISO 8601 datetime)",
-        "end_time": "string (ISO 8601 datetime)"
-    }
-]
-```
-
----
-
-#### **Update Booking**
-**Description:** *Updates an existing booking's time slots.*
-
-**Endpoint:** `PUT /api/bookings/{id}`
-
-**Request Body:**
-```json
-{
-    "start_time": "string (ISO 8601 datetime, optional)",
-    "end_time": "string (ISO 8601 datetime, optional)"
-}
-```
-
-**Response:** `200 OK`
-```json
-{
-    "id": "integer",
-    "user_id": "integer",
-    "room_id": "integer",
-    "start_time": "string (ISO 8601 datetime)",
-    "end_time": "string (ISO 8601 datetime)"
-}
-```
-
----
-
-#### **Delete Booking**
-**Description:** *Removes a booking from the system.*
-
-**Endpoint:** `DELETE /api/bookings/{id}`
-
-**Response:** `204 No Content`
 
 ---
 
@@ -444,6 +321,129 @@ Authorization: Bearer <access_token>
 **Description:** *Removes a room from the system.*
 
 **Endpoint:** `DELETE /api/rooms/{id}`
+
+**Response:** `204 No Content`
+
+---
+
+### Bookings Endpoints
+
+#### **Create Booking**
+**Description:** *Creates a new room booking.*
+
+**Endpoint:** `POST /api/bookings/`
+
+**Request Body:**
+```json
+{
+    "user_id": "integer",
+    "room_id": "integer",
+    "start_time": "string (ISO 8601 datetime)",
+    "end_time": "string (ISO 8601 datetime)"
+}
+```
+
+**Response:** `201 Created`
+```json
+{
+    "id": "integer",
+    "user_id": "integer",
+    "room_id": "integer",
+    "start_time": "string (ISO 8601 datetime)",
+    "end_time": "string (ISO 8601 datetime)"
+}
+```
+
+---
+
+#### **Get Booking by ID**
+**Description:** *Retrieves details of a specific booking.*
+
+**Endpoint:** `GET /api/bookings/{id}`
+
+**Response:** `200 OK`
+```json
+{
+    "id": "integer",
+    "user_id": "integer",
+    "room_id": "integer",
+    "start_time": "string (ISO 8601 datetime)",
+    "end_time": "string (ISO 8601 datetime)"
+}
+```
+
+---
+
+#### **Get User Bookings**
+**Description:** *Retrieves all bookings for a specific user.*
+
+**Endpoint:** `GET /api/bookings/user/{user_id}`
+
+**Response:** `200 OK`
+```json
+[
+    {
+        "id": "integer",
+        "user_id": "integer",
+        "room_id": "integer",
+        "start_time": "string (ISO 8601 datetime)",
+        "end_time": "string (ISO 8601 datetime)"
+    }
+]
+```
+
+---
+
+#### **Get Room Bookings (Admin Only)**
+**Description:** *Retrieves all bookings for a specific room.*
+
+**Endpoint:** `GET /api/bookings/room/{room_id}`
+
+**Response:** `200 OK`
+```json
+[
+    {
+        "id": "integer",
+        "user_id": "integer",
+        "room_id": "integer",
+        "start_time": "string (ISO 8601 datetime)",
+        "end_time": "string (ISO 8601 datetime)"
+    }
+]
+```
+
+---
+
+#### **Update Booking**
+**Description:** *Updates an existing booking's time slots.*
+
+**Endpoint:** `PUT /api/bookings/{id}`
+
+**Request Body:**
+```json
+{
+    "start_time": "string (ISO 8601 datetime, optional)",
+    "end_time": "string (ISO 8601 datetime, optional)"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+    "id": "integer",
+    "user_id": "integer",
+    "room_id": "integer",
+    "start_time": "string (ISO 8601 datetime)",
+    "end_time": "string (ISO 8601 datetime)"
+}
+```
+
+---
+
+#### **Delete Booking**
+**Description:** *Removes a booking from the system.*
+
+**Endpoint:** `DELETE /api/bookings/{id}`
 
 **Response:** `204 No Content`
 
